@@ -41,9 +41,9 @@ function sendArr(arr) {
   chrome.runtime.sendMessage(arr);
 }
 
-// Make sure storageArr and chrome sync storage have the same values
+// Make sure storageArr and chrome local storage have the same values
 storageArr = [];
-chrome.storage.sync.get(['history'], function(result) {
+chrome.storage.local.get(['history'], function(result) {
   if (typeof result.history !== 'undefined') {
     storageArr = result.history;
   }
@@ -67,14 +67,14 @@ var interval = setInterval(function() {
         storageArr.push(["time", getTime()]);
         storageArr.push(["url", url]);
         prevURL = url;
-        chrome.storage.sync.set({"history": storageArr}, function() {
+        chrome.storage.local.set({"history": storageArr}, function() {
           sendArr(storageArr);
         });
       }
     } else if (tabsLength == 0 && prevTabsLength == 1) {
       // If this is the first second with no active tab, record the time
       storageArr.push(["time", getTime()]);
-      chrome.storage.sync.set({"history": storageArr}, function() {
+      chrome.storage.local.set({"history": storageArr}, function() {
         sendArr(storageArr);
       });
     }
@@ -82,3 +82,9 @@ var interval = setInterval(function() {
     prevTabsLength = tabsLength;
   });
 }, 1000);
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message == "loaded") {
+    sendArr(storageArr);
+  }
+});

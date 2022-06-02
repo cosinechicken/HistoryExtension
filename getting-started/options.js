@@ -67,6 +67,8 @@ function generateTable(table, data) {
 
 var table = document.getElementById("messageTable").getElementsByTagName('tbody')[0];
 
+chrome.runtime.sendMessage("loaded");
+
 chrome.runtime.onMessage.addListener((message) => {
   // Clear the table, then generate a new table each time we receive a message. 
   clearTable(table);
