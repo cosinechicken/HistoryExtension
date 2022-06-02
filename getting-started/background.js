@@ -52,12 +52,26 @@ sendArr(storageArr);
 
 var prevURL = "";
 var prevTabsLength = 0;
+var time = 0;
+var isFocused = true;
 
 // Repeatedly get data every 1000 milliseconds
 var interval = setInterval(function() { 
+  time++;
   // Get active tabs
-  chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+  chrome.windows.getLastFocused(window => {
+    isFocused = window.focused;
+  });
+  chrome.tabs.query({active: true, lastFocusedWindow: true, highlighted: true}, tabs => {
+    
     let tabsLength = tabs.length;
+    if (!isFocused) {
+      tabsLength = 0;
+    }
+    // For testing
+    if (time % 60 == 0) {
+      console.log([getTime(), tabsLength, prevTabsLength]);
+    }
     // If there's an active tab, check if it's different from before
     if (tabsLength > 0) {
       let url = tabs[0].url;
@@ -82,9 +96,3 @@ var interval = setInterval(function() {
     prevTabsLength = tabsLength;
   });
 }, 1000);
-
-chrome.runtime.onMessage.addListener((message) => {
-  if (message == "loaded") {
-    sendArr(storageArr);
-  }
-});

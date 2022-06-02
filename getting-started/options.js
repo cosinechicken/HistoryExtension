@@ -65,6 +65,13 @@ function generateTable(table, data) {
     }
 }
 
+document.getElementById("clearHistory").addEventListener("click", clearHistory);
+
+function clearHistory() {
+  chrome.runtime.sendMessage("clear history");
+  console.log("History cleared");
+}
+
 var table = document.getElementById("messageTable").getElementsByTagName('tbody')[0];
 
 chrome.runtime.sendMessage("loaded");
