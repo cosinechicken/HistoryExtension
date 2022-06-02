@@ -1,9 +1,30 @@
+// Helper method to pad a number with zeros
+function padZeros(num, numZeros) {
+  let count = 0;
+  let temp = num;
+  if (temp == 0) {
+    count = 1
+  }
+  while (temp > 0) {
+    count += 1;
+    temp = Math.floor(temp/10);
+  }
+  paddedStr = "";
+  for (let i = 0; i < numZeros - count; i++) {
+    paddedStr += "0";
+  }
+  return paddedStr + num;
+}
+
 // Helper method to get current time
 function getTime() {
   const d = new Date();
-  return d.toString();
+  // Get the string for the time
+  timeStr = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear() 
+    + " " + d.getHours() + ":" + padZeros(d.getMinutes(), 2) + ":" + padZeros(d.getSeconds(), 2) + " PDT";
+  // Set to PDT for now
+  return timeStr;
 }
-
 // Helper method to clear the table
 function clearTable(table) {
   while (table.rows.length > 0) {
