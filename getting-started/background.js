@@ -96,3 +96,14 @@ var interval = setInterval(function() {
     prevTabsLength = tabsLength;
   });
 }, 1000);
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message == "loaded") {
+    sendArr(storageArr);
+  } else if (message == "clear history") {
+    storageArr = [];
+    chrome.storage.local.set({"history": storageArr}, function() {
+      sendArr(storageArr);
+    });
+  }
+});
