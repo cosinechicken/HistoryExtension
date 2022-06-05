@@ -19,12 +19,21 @@ function padZeros(num, numZeros) {
 // Helper method to get current time
 function getTime() {
   const d = new Date();
+  // Hardcode timezone
+  let timezone = "unknown timezone";
+  let offset = d.getTimezoneOffset();
+  if (offset == 420) {
+    timezone = "PT";
+  }
+  if (offset == 240) {
+    timezone = "ET";
+  }
   // Get the string for the time
   timeStr = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear() 
-    + " " + d.getHours() + ":" + padZeros(d.getMinutes(), 2) + ":" + padZeros(d.getSeconds(), 2) + " PDT";
-  // Set to PDT for now
+    + " " + d.getHours() + ":" + padZeros(d.getMinutes(), 2) + ":" + padZeros(d.getSeconds(), 2) + " " + timezone;
   return timeStr;
 }
+
 // Helper method to clear the table
 function clearTable(table) {
   while (table.rows.length > 0) {
