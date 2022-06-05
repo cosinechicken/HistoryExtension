@@ -25,4 +25,7 @@ table.sortable tbody tr:nth-child(2n) td {
   cursor: pointer;
   width: 160px;
   background-color: #1B6EC2;
+  margin:8px;
 }
+
+
