@@ -66,6 +66,7 @@ var isFocused = true;
 // Repeatedly get data every 1000 milliseconds
 var interval = setInterval(function() { 
   time++;
+  console.log(getTime());
   // Get active tabs
   chrome.windows.getLastFocused(window => {
     isFocused = window.focused;

@@ -91,5 +91,11 @@ chrome.runtime.onMessage.addListener((message) => {
   generateTable(table, message);
 });
 
+// Script for persistent service worker
 
-
+let port;
+function connect() {
+  port = chrome.runtime.connect({name: 'foo'});
+  port.onDisconnect.addListener(connect);
+}
+connect();
