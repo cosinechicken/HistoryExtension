@@ -78,7 +78,7 @@ function dataToTable(data) {
 function getLength(data) {
     let lengthDict = {};
     // Add end time for current tab
-    data.push(["time", getTime()]);
+    data.push(["time", Date.now()]);
     let count = 1;
     for (let i = 0; i < data.length; i++) {
         if (Array.isArray(data[i]) && data[i][0] == "url") {
@@ -88,8 +88,16 @@ function getLength(data) {
             if (typeof lengthDict[url] == 'undefined') {
                 lengthDict[url] = 0;
             }
+            lengthDict[url] += Math.round((end - start)/1000);
         }
     }
+    let lengthArr = [];
+    for (let key in lengthDict) {
+        lengthArr.push([]);
+        lengthArr[lengthArr.length - 1].push(key);
+        lengthArr[lengthArr.length - 1].push(lengthDict[key] + " seconds");
+    }
+    return lengthArr;
 }
 
 // Get the data from background.js
@@ -102,6 +110,6 @@ chrome.runtime.onMessage.addListener((message) => {
     // Clear the table, then generate a new table each time we receive a message. 
     let eventArr = message;
     clearTable(timeTable);
-    let lengthDict = getLength(eventArr);
-    generateTable(timeTable, dataToTable(message));
+    let lengthArr = getLength(eventArr);
+    generateTable(timeTable, lengthArr);
 });
