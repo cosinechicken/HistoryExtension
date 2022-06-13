@@ -87,7 +87,7 @@ var interval = setInterval(function() {
       url = processURL(url);
       if ((url != prevURL) || prevTabsLength == 0) {
         // If domain name is different from before, update the arrays and send a message
-        storageArr.push(["time", getTime()]);
+        storageArr.push(["time", Date.now()]);
         storageArr.push(["url", url]);
         prevURL = url;
         chrome.storage.local.set({"history": storageArr}, function() {
@@ -96,7 +96,7 @@ var interval = setInterval(function() {
       }
     } else if (tabsLength == 0 && prevTabsLength == 1) {
       // If this is the first second with no active tab, record the time
-      storageArr.push(["time", getTime()]);
+      storageArr.push(["time", Date.now()]);
       chrome.storage.local.set({"history": storageArr}, function() {
         sendArr(storageArr);
       });

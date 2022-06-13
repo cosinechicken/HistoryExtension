@@ -17,11 +17,11 @@ function padZeros(num, numZeros) {
 }
 
 // Helper method to get current time
-function getTime() {
-  const d = new Date();
+function getTime(d) {
   // Hardcode timezone
   let timezone = "unknown timezone";
   let offset = d.getTimezoneOffset();
+  
   if (offset == 420) {
     timezone = "PT";
   }
@@ -44,7 +44,7 @@ function clearTable(table) {
 // Method to turn the data into an array to be passed into generateTable
 function dataToTable(data) {
   // Add end time for current tab
-  data.push(["time", getTime()]);
+  data.push(["time", Date.now()]);
   let result = [];
   let count = 1;
   
@@ -54,8 +54,8 @@ function dataToTable(data) {
       result.push([]);
       result[result.length - 1].push(count);
       result[result.length - 1].push(data[i][1]);
-      result[result.length - 1].push(data[i-1][1]);
-      result[result.length - 1].push(data[i+1][1]);
+      result[result.length - 1].push(getTime(new Date(data[i-1][1])));
+      result[result.length - 1].push(getTime(new Date(data[i+1][1])));
       count++;
     }
   }
