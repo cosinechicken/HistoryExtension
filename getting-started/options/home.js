@@ -74,6 +74,8 @@ function generateTable(table, data) {
     }
 }
 
+// Add functionality to clear history
+
 document.getElementById("clearHistory").addEventListener("click", clearHistory);
 
 function clearHistory() {
@@ -81,12 +83,17 @@ function clearHistory() {
   console.log("History cleared");
 }
 
+// Get the data from background.js
+
 var table = document.getElementById("messageTable").getElementsByTagName('tbody')[0];
 
 chrome.runtime.sendMessage("loaded");
 
+var eventArr = [];
+
 chrome.runtime.onMessage.addListener((message) => {
   // Clear the table, then generate a new table each time we receive a message. 
+  eventArr = message;
   clearTable(table);
   generateTable(table, message);
 });
