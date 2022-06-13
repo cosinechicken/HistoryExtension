@@ -40,39 +40,39 @@ function clearTable(table) {
       table.deleteRow(-1);
     }
 }
-  
-// Method to generate table
-function generateTable(table, data) {
+
+// Method to turn the data into an array to be passed into generateTable
+function dataToTable(data) {
     // Add end time for current tab
     data.push(["time", getTime()]);
+    let result = [];
     let count = 1;
+    
+    // Iterate through the array and add the URL's and the corresponding times into the array
     for (let i = 0; i < data.length; i++) {
-        if (Array.isArray(data[i]) && data[i][0] == "url") {
-            let row = table.insertRow(-1);
-
-            // Add cell for number
-            let numCell = row.insertCell();
-            let numText = document.createTextNode(count);
-            count++;
-            numCell.appendChild(numText);
-
-            // Add cell for url
-            let cell = row.insertCell();
-            let text = document.createTextNode(data[i][1]);
-            cell.appendChild(text);
-
-            // Add cell for start time
-            let start = row.insertCell();
-            let textStart = document.createTextNode(data[i-1][1]);
-            start.appendChild(textStart);
-
-            // Add cell for end time
-            let end = row.insertCell();
-            let textEnd = document.createTextNode(data[i+1][1]);
-            end.appendChild(textEnd);
-        }
+      if (Array.isArray(data[i]) && data[i][0] == "url") {
+        result.push([]);
+        result[result.length - 1].push(count);
+        result[result.length - 1].push(data[i][1]);
+        result[result.length - 1].push(data[i-1][1]);
+        result[result.length - 1].push(data[i+1][1]);
+        count++;
+      }
     }
-}
+    return result;
+  }
+  
+  // Method to generate table
+  function generateTable(table, data) {
+      for (let i = 0; i < data.length; i++) {
+        let row = table.insertRow(-1);
+         for (let j = 0; j < data[0].length; j++) {
+           let cell = row.insertCell();
+           let text = document.createTextNode(data[i][j]);
+           cell.appendChild(text);
+         }
+      }
+  }
 
 // Get amount of time spent on each website from eventArr
 function getLength(data) {
@@ -103,5 +103,5 @@ chrome.runtime.onMessage.addListener((message) => {
     let eventArr = message;
     clearTable(timeTable);
     let lengthDict = getLength(eventArr);
-    generateTable(timeTable, message);
+    generateTable(timeTable, dataToTable(message));
 });
