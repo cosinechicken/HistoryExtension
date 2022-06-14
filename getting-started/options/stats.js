@@ -62,6 +62,23 @@ function dataToTable(data) {
     return result;
   }
   
+// Method to turn number of seconds into a string
+function secondsToString(seconds) {
+    let s = seconds % 60;
+    let minutes = Math.floor(seconds/60);
+    let m = minutes % 60;
+    let h = Math.floor(minutes/60);
+    let sStr = "" + s;
+    if (s < 10) {
+        sStr = "0" + s;
+    }
+    let mStr = "" + m;
+    if (m < 10) {
+        mStr = "0" + m;
+    }
+    return h + ":" + mStr + ":" + sStr;
+}
+
   // Method to generate table
   function generateTable(table, data) {
       for (let i = 0; i < data.length; i++) {
@@ -95,7 +112,9 @@ function getLength(data) {
     for (let key in lengthDict) {
         lengthArr.push([]);
         lengthArr[lengthArr.length - 1].push(key);
-        lengthArr[lengthArr.length - 1].push(lengthDict[key] + " seconds");
+        let seconds = lengthDict[key];
+        let timeStr = secondsToString(seconds)
+        lengthArr[lengthArr.length - 1].push(timeStr);
     }
     return lengthArr;
 }
