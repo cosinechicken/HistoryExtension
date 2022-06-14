@@ -40,27 +40,6 @@ function clearTable(table) {
       table.deleteRow(-1);
     }
 }
-
-// Method to turn the data into an array to be passed into generateTable
-function dataToTable(data) {
-    // Add end time for current tab
-    data.push(["time", getTime()]);
-    let result = [];
-    let count = 1;
-    
-    // Iterate through the array and add the URL's and the corresponding times into the array
-    for (let i = 0; i < data.length; i++) {
-      if (Array.isArray(data[i]) && data[i][0] == "url") {
-        result.push([]);
-        result[result.length - 1].push(count);
-        result[result.length - 1].push(data[i][1]);
-        result[result.length - 1].push(data[i-1][1]);
-        result[result.length - 1].push(data[i+1][1]);
-        count++;
-      }
-    }
-    return result;
-  }
   
 // Method to turn number of seconds into a string
 function secondsToString(seconds) {
@@ -98,7 +77,7 @@ function getLength(data) {
     data.push(["time", Date.now()]);
     let count = 1;
     for (let i = 0; i < data.length; i++) {
-        if (Array.isArray(data[i]) && data[i][0] == "url") {
+        if (Array.isArray(data[i]) && data[i][0] == "url" && data[i][1].length > 0) {
             let url = data[i][1];
             let start = data[i-1][1];
             let end = data[i+1][1];

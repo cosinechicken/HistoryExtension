@@ -50,7 +50,7 @@ function dataToTable(data) {
   
   // Iterate through the array and add the URL's and the corresponding times into the array
   for (let i = 0; i < data.length; i++) {
-    if (Array.isArray(data[i]) && data[i][0] == "url") {
+    if (Array.isArray(data[i]) && data[i][0] == "url" && data[i][1].length > 0) {
       result.push([]);
       result[result.length - 1].push(count);
       result[result.length - 1].push(data[i][1]);
