@@ -46,7 +46,11 @@ function processURL(url) {
 
 // Helper method to send a message with an array
 function sendArr(arr) {
-  chrome.runtime.sendMessage(arr);
+  try {
+    chrome.runtime.sendMessage(arr);
+  } catch (error) {
+    console.log("ERROR: " + error);
+  }
 }
 
 // Make sure storageArr and chrome local storage have the same values
